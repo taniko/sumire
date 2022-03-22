@@ -22,12 +22,12 @@ type options struct {
 	handlers []Handler
 }
 
-func NewLogger(name string, opts ...Option) Sumire {
+func NewLogger(name string, opts ...Option) *Sumire {
 	options := options{}
 	for _, opt := range opts {
 		opt.apply(&options)
 	}
-	return Sumire{
+	return &Sumire{
 		name:    name,
 		options: options,
 	}
