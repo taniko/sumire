@@ -22,7 +22,7 @@ const (
 )
 
 type (
-	Logger interface {
+	StandardLogger interface {
 		Debug(message string, context interface{})
 		Info(message string, context interface{})
 		Notice(message string, context interface{})

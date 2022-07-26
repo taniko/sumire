@@ -7,11 +7,11 @@ import (
 )
 
 var (
-	_ Logger        = (*Sumire)(nil)
-	_ ContextLogger = (*Sumire)(nil)
+	_ StandardLogger = (*Logger)(nil)
+	_ ContextLogger  = (*Logger)(nil)
 )
 
-type Sumire struct {
+type Logger struct {
 	mutex   sync.Mutex
 	name    string
 	options options
@@ -22,106 +22,106 @@ type options struct {
 	handlers []Handler
 }
 
-func NewLogger(name string, opts ...Option) *Sumire {
+func NewLogger(name string, opts ...Option) *Logger {
 	options := options{}
 	for _, opt := range opts {
 		opt.apply(&options)
 	}
-	return &Sumire{
+	return &Logger{
 		name:    name,
 		options: options,
 	}
 }
 
-func (s *Sumire) Debug(message string, context interface{}) {
-	s.write(DEBUG, message, context)
+func (l *Logger) Debug(message string, context interface{}) {
+	l.write(DEBUG, message, context)
 }
 
-func (s *Sumire) Info(message string, context interface{}) {
-	s.write(INFO, message, context)
+func (l *Logger) Info(message string, context interface{}) {
+	l.write(INFO, message, context)
 }
 
-func (s *Sumire) Notice(message string, context interface{}) {
-	s.write(NOTICE, message, context)
+func (l *Logger) Notice(message string, context interface{}) {
+	l.write(NOTICE, message, context)
 }
 
-func (s *Sumire) Warning(message string, context interface{}) {
-	s.write(WARNING, message, context)
+func (l *Logger) Warning(message string, context interface{}) {
+	l.write(WARNING, message, context)
 }
 
-func (s *Sumire) Error(message string, context interface{}) {
-	s.write(ERROR, message, context)
+func (l *Logger) Error(message string, context interface{}) {
+	l.write(ERROR, message, context)
 }
 
-func (s *Sumire) Alert(message string, context interface{}) {
-	s.write(ALERT, message, context)
+func (l *Logger) Alert(message string, context interface{}) {
+	l.write(ALERT, message, context)
 }
 
-func (s *Sumire) Critical(message string, context interface{}) {
-	s.write(CRITICAL, message, context)
+func (l *Logger) Critical(message string, context interface{}) {
+	l.write(CRITICAL, message, context)
 }
 
-func (s *Sumire) Emergency(message string, context interface{}) {
-	s.write(EMERGENCY, message, context)
+func (l *Logger) Emergency(message string, context interface{}) {
+	l.write(EMERGENCY, message, context)
 }
 
-func (s *Sumire) DebugContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, DEBUG, message, context)
+func (l *Logger) DebugContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, DEBUG, message, context)
 
 }
 
-func (s *Sumire) InfoContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, INFO, message, context)
+func (l *Logger) InfoContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, INFO, message, context)
 }
 
-func (s *Sumire) NoticeContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, NOTICE, message, context)
+func (l *Logger) NoticeContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, NOTICE, message, context)
 }
 
-func (s *Sumire) WarningContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, WARNING, message, context)
+func (l *Logger) WarningContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, WARNING, message, context)
 }
 
-func (s *Sumire) ErrorContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, ERROR, message, context)
+func (l *Logger) ErrorContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, ERROR, message, context)
 }
 
-func (s *Sumire) CriticalContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, CRITICAL, message, context)
+func (l *Logger) CriticalContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, CRITICAL, message, context)
 }
 
-func (s *Sumire) AlertContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, ALERT, message, context)
+func (l *Logger) AlertContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, ALERT, message, context)
 }
 
-func (s *Sumire) EmergencyContext(ctx context.Context, message string, context interface{}) {
-	s.writeContext(ctx, EMERGENCY, message, context)
+func (l *Logger) EmergencyContext(ctx context.Context, message string, context interface{}) {
+	l.writeContext(ctx, EMERGENCY, message, context)
 }
 
-func (s *Sumire) write(level Level, message string, c interface{}) {
-	s.writeContext(context.Background(), level, message, c)
+func (l *Logger) write(level Level, message string, c interface{}) {
+	l.writeContext(context.Background(), level, message, c)
 }
 
-func (s *Sumire) writeContext(ctx context.Context, level Level, message string, context interface{}) {
+func (l *Logger) writeContext(ctx context.Context, level Level, message string, context interface{}) {
 	record := Record{
-		Name:      s.name,
+		Name:      l.name,
 		Severity:  level,
 		Timestamp: time.Now(),
 		Message:   message,
 		Context:   context,
 		Extra:     map[string]interface{}{},
 	}
-	for _, f := range s.options.filters {
+	for _, f := range l.options.filters {
 		f.Filter(ctx, record)
 	}
-	s.writeRecord(record)
+	l.writeRecord(record)
 }
 
-func (s *Sumire) writeRecord(record Record) {
-	for _, handler := range s.options.handlers {
+func (l *Logger) writeRecord(record Record) {
+	for _, handler := range l.options.handlers {
 		func() {
-			s.mutex.Lock()
-			defer s.mutex.Unlock()
+			l.mutex.Lock()
+			defer l.mutex.Unlock()
 			handler.Handle(record)
 		}()
 	}
