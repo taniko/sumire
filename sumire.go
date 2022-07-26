@@ -99,7 +99,7 @@ func (l *Logger) EmergencyContext(ctx context.Context, message string, context i
 }
 
 func (l *Logger) write(level Level, message string, c interface{}) {
-	l.writeContext(context.Background(), level, message, c)
+	l.writeContext(context.TODO(), level, message, c)
 }
 
 func (l *Logger) writeContext(ctx context.Context, level Level, message string, context interface{}) {
