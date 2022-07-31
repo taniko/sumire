@@ -68,6 +68,12 @@ func WithAppendixExtra(name string, key interface{}) Option {
 	})
 }
 
+func WithExit(level Level) Option {
+	return optionFunc(func(o *options) {
+		o.exit = &level
+	})
+}
+
 func (a appendixExtra) Filter(ctx context.Context, record Record) Record {
 	if value := ctx.Value(a.key); value != nil {
 		record.Extra[a.name] = ctx.Value(a.key)

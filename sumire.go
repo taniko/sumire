@@ -2,6 +2,7 @@ package sumire
 
 import (
 	"context"
+	"os"
 	"sync"
 	"time"
 )
@@ -20,6 +21,7 @@ type Logger struct {
 type options struct {
 	filters  []RecordFilter
 	handlers []Handler
+	exit     *Level
 }
 
 func NewLogger(name string, opts ...Option) *Logger {
@@ -115,6 +117,9 @@ func (l *Logger) writeContext(ctx context.Context, level Level, message string, 
 		f.Filter(ctx, record)
 	}
 	l.writeRecord(record)
+	if l.options.exit != nil && level >= *l.options.exit {
+		os.Exit(1)
+	}
 }
 
 func (l *Logger) writeRecord(record Record) {
