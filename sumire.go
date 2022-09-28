@@ -34,77 +34,76 @@ func NewLogger(name string, opts ...Option) *Logger {
 		options: options,
 	}
 }
-
-func (l *Logger) Debug(message string, context interface{}) {
+func (l *Logger) Debug(message string, context any) {
 	l.write(DEBUG, message, context)
 }
 
-func (l *Logger) Info(message string, context interface{}) {
+func (l *Logger) Info(message string, context any) {
 	l.write(INFO, message, context)
 }
 
-func (l *Logger) Notice(message string, context interface{}) {
+func (l *Logger) Notice(message string, context any) {
 	l.write(NOTICE, message, context)
 }
 
-func (l *Logger) Warning(message string, context interface{}) {
+func (l *Logger) Warning(message string, context any) {
 	l.write(WARNING, message, context)
 }
 
-func (l *Logger) Error(message string, context interface{}) {
+func (l *Logger) Error(message string, context any) {
 	l.write(ERROR, message, context)
 }
 
-func (l *Logger) Alert(message string, context interface{}) {
+func (l *Logger) Alert(message string, context any) {
 	l.write(ALERT, message, context)
 }
 
-func (l *Logger) Critical(message string, context interface{}) {
+func (l *Logger) Critical(message string, context any) {
 	l.write(CRITICAL, message, context)
 }
 
-func (l *Logger) Emergency(message string, context interface{}) {
+func (l *Logger) Emergency(message string, context any) {
 	l.write(EMERGENCY, message, context)
 }
 
-func (l *Logger) DebugContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) DebugContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, DEBUG, message, context)
 
 }
 
-func (l *Logger) InfoContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) InfoContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, INFO, message, context)
 }
 
-func (l *Logger) NoticeContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) NoticeContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, NOTICE, message, context)
 }
 
-func (l *Logger) WarningContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) WarningContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, WARNING, message, context)
 }
 
-func (l *Logger) ErrorContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) ErrorContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, ERROR, message, context)
 }
 
-func (l *Logger) CriticalContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) CriticalContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, CRITICAL, message, context)
 }
 
-func (l *Logger) AlertContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) AlertContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, ALERT, message, context)
 }
 
-func (l *Logger) EmergencyContext(ctx context.Context, message string, context interface{}) {
+func (l *Logger) EmergencyContext(ctx context.Context, message string, context any) {
 	l.writeContext(ctx, EMERGENCY, message, context)
 }
 
-func (l *Logger) write(level Level, message string, c interface{}) {
+func (l *Logger) write(level Level, message string, c any) {
 	l.writeContext(context.TODO(), level, message, c)
 }
 
-func (l *Logger) writeContext(ctx context.Context, level Level, message string, context interface{}) {
+func (l *Logger) writeContext(ctx context.Context, level Level, message string, context any) {
 	record := Record{
 		Name:      l.name,
 		Severity:  level,

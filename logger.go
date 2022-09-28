@@ -23,24 +23,24 @@ const (
 
 type (
 	StandardLogger interface {
-		Debug(message string, context interface{})
-		Info(message string, context interface{})
-		Notice(message string, context interface{})
-		Warning(message string, context interface{})
-		Error(message string, context interface{})
-		Critical(message string, context interface{})
-		Alert(message string, context interface{})
-		Emergency(message string, context interface{})
+		Debug(message string, context any)
+		Info(message string, context any)
+		Notice(message string, context any)
+		Warning(message string, context any)
+		Error(message string, context any)
+		Critical(message string, context any)
+		Alert(message string, context any)
+		Emergency(message string, context any)
 	}
 	ContextLogger interface {
-		DebugContext(ctx context.Context, message string, context interface{})
-		InfoContext(ctx context.Context, message string, context interface{})
-		NoticeContext(ctx context.Context, message string, context interface{})
-		WarningContext(ctx context.Context, message string, context interface{})
-		ErrorContext(ctx context.Context, message string, context interface{})
-		CriticalContext(ctx context.Context, message string, context interface{})
-		AlertContext(ctx context.Context, message string, context interface{})
-		EmergencyContext(ctx context.Context, message string, context interface{})
+		DebugContext(ctx context.Context, message string, context any)
+		InfoContext(ctx context.Context, message string, context any)
+		NoticeContext(ctx context.Context, message string, context any)
+		WarningContext(ctx context.Context, message string, context any)
+		ErrorContext(ctx context.Context, message string, context any)
+		CriticalContext(ctx context.Context, message string, context any)
+		AlertContext(ctx context.Context, message string, context any)
+		EmergencyContext(ctx context.Context, message string, context any)
 	}
 )
 
